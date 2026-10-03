@@ -1,6 +1,10 @@
+
 <!DOCTYPE html>
+
 <html lang="en">
+
 <head>
+
     <meta charset="UTF-8">
 
     <meta
@@ -10,305 +14,320 @@
 
     <title>VideoRec</title>
 
-<style>
-    * {
-        box-sizing: border-box;
-        margin: 0;
-        padding: 0;
-    }
-
-    body {
-        font-family: Arial, sans-serif;
-        min-height: 100vh;
-
-        background:
-            linear-gradient(
-                135deg,
-                #eef2ff 0%,
-                #e0f2fe 45%,
-                #f5f3ff 100%
-            );
-
-        color: #172033;
-    }
-
-    /* Navigation */
-
-    .navbar {
-        height: 72px;
-
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-
-        padding: 0 40px;
-
-        background: rgba(255, 255, 255, 0.85);
-
-        backdrop-filter: blur(12px);
-
-        border-bottom: 1px solid rgba(255, 255, 255, 0.7);
-
-        box-shadow:
-            0 4px 20px rgba(79, 70, 229, 0.08);
-
-        position: sticky;
-        top: 0;
-        z-index: 100;
-    }
-
-    /* Logo */
-
-    .logo {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-
-        font-size: 23px;
-        font-weight: 700;
-
-        color: #172033;
-    }
-
-    .logo-icon {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-
-        width: 38px;
-        height: 38px;
-
-        border-radius: 10px;
-
-        color: white;
-
-        background:
-            linear-gradient(
-                135deg,
-                #6366f1,
-                #8b5cf6
-            );
-
-        font-size: 17px;
-
-        box-shadow:
-            0 6px 15px rgba(99, 102, 241, 0.3);
-    }
-
-    /* Search */
-
-    .search {
-        width: 420px;
-
-        padding: 12px 18px;
-
-        border: 1px solid #dbe2f0;
-
-        border-radius: 12px;
-
-        background: rgba(255, 255, 255, 0.9);
-
-        color: #172033;
-
-        outline: none;
-
-        font-size: 15px;
-
-        box-shadow:
-            0 4px 15px rgba(79, 70, 229, 0.06);
-
-        transition:
-            border-color 0.2s ease,
-            box-shadow 0.2s ease;
-    }
-
-    .search::placeholder {
-        color: #8a94a6;
-    }
-
-    .search:focus {
-        border-color: #6366f1;
-
-        box-shadow:
-            0 0 0 3px rgba(99, 102, 241, 0.12);
-    }
-
-    /* Main */
-
-    .container {
-        max-width: 1400px;
-
-        margin: 0 auto;
-
-        padding: 50px 40px;
-    }
-
-    /* Hero */
-
-    .hero {
-        margin-bottom: 40px;
-    }
-
-    .hero h1 {
-        font-size: 36px;
-
-        line-height: 1.2;
-
-        margin-bottom: 12px;
-
-        background:
-            linear-gradient(
-                90deg,
-                #4338ca,
-                #7c3aed,
-                #2563eb
-            );
-
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-    }
-
-    .hero p {
-        color: #64748b;
-
-        font-size: 17px;
-
-        line-height: 1.6;
-    }
-
-    /* Video grid */
-
-    .videos {
-        display: grid;
-
-        grid-template-columns:
-            repeat(auto-fill, minmax(300px, 1fr));
-
-        gap: 28px;
-    }
-
-    /* Video card */
-
-    .video-card {
-        overflow: hidden;
-
-        background: rgba(255, 255, 255, 0.92);
-
-        border: 1px solid rgba(255, 255, 255, 0.8);
-
-        border-radius: 16px;
-
-        box-shadow:
-            0 8px 30px rgba(79, 70, 229, 0.10);
-
-        transition:
-            transform 0.25s ease,
-            box-shadow 0.25s ease;
-    }
-
-    .video-card:hover {
-        transform: translateY(-6px);
-
-        box-shadow:
-            0 15px 35px rgba(79, 70, 229, 0.18);
-    }
-
-    /* YouTube player */
-
-    .thumbnail {
-        display: block;
-
-        width: 100%;
-
-        aspect-ratio: 16 / 9;
-
-        border: none;
-    }
-
-    /* Video information */
-
-    .video-info {
-        padding: 18px;
-    }
-
-    .video-title {
-        color: #172033;
-
-        font-size: 17px;
-
-        line-height: 1.45;
-
-        margin-bottom: 10px;
-    }
-
-    .channel {
-        color: #6366f1;
-
-        font-size: 14px;
-
-        font-weight: 600;
-
-        margin-bottom: 7px;
-    }
-
-    .published {
-        color: #94a3b8;
-
-        font-size: 13px;
-    }
-
-    /* Responsive */
-
-    @media (max-width: 800px) {
+    <style>
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            min-height: 100vh;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #eef2ff 0%,
+                    #e0f2fe 45%,
+                    #f5f3ff 100%
+                );
+
+            color: #172033;
+        }
+
+        /* Navigation */
 
         .navbar {
-            padding: 0 20px;
+            height: 72px;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            padding: 0 40px;
+
+            background: rgba(255, 255, 255, 0.85);
+
+            backdrop-filter: blur(12px);
+
+            border-bottom:
+                1px solid rgba(255, 255, 255, 0.7);
+
+            box-shadow:
+                0 4px 20px rgba(79, 70, 229, 0.08);
+
+            position: sticky;
+            top: 0;
+            z-index: 100;
         }
+
+        /* Logo */
+
+        .logo {
+            display: flex;
+            align-items: center;
+
+            gap: 10px;
+
+            font-size: 23px;
+            font-weight: 700;
+
+            color: #172033;
+        }
+
+        .logo-icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            width: 38px;
+            height: 38px;
+
+            border-radius: 10px;
+
+            color: white;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #6366f1,
+                    #8b5cf6
+                );
+
+            font-size: 17px;
+
+            box-shadow:
+                0 6px 15px rgba(99, 102, 241, 0.3);
+        }
+
+        /* Search */
 
         .search {
-            width: 280px;
+            width: 420px;
+
+            padding: 12px 18px;
+
+            border:
+                1px solid #dbe2f0;
+
+            border-radius: 12px;
+
+            background:
+                rgba(255, 255, 255, 0.9);
+
+            color: #172033;
+
+            outline: none;
+
+            font-size: 15px;
+
+            box-shadow:
+                0 4px 15px rgba(79, 70, 229, 0.06);
+
+            transition:
+                border-color 0.2s ease,
+                box-shadow 0.2s ease;
         }
 
+        .search::placeholder {
+            color: #8a94a6;
+        }
+
+        .search:focus {
+            border-color: #6366f1;
+
+            box-shadow:
+                0 0 0 3px rgba(99, 102, 241, 0.12);
+        }
+
+        /* Main */
+
         .container {
-            padding: 35px 20px;
+            max-width: 1400px;
+
+            margin: 0 auto;
+
+            padding: 50px 40px;
+        }
+
+        /* Hero */
+
+        .hero {
+            margin-bottom: 40px;
         }
 
         .hero h1 {
-            font-size: 30px;
-        }
-    }
+            font-size: 36px;
 
-    @media (max-width: 600px) {
+            line-height: 1.2;
 
-        .navbar {
-            height: auto;
+            margin-bottom: 12px;
 
-            padding: 15px 20px;
+            background:
+                linear-gradient(
+                    90deg,
+                    #4338ca,
+                    #7c3aed,
+                    #2563eb
+                );
 
-            gap: 15px;
-
-            flex-direction: column;
-        }
-
-        .search {
-            width: 100%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
 
-        .container {
-            padding: 30px 15px;
+        .hero p {
+            color: #64748b;
+
+            font-size: 17px;
+
+            line-height: 1.6;
         }
+
+        /* Video grid */
 
         .videos {
-            grid-template-columns: 1fr;
+            display: grid;
 
-            gap: 20px;
+            grid-template-columns:
+                repeat(
+                    auto-fill,
+                    minmax(300px, 1fr)
+                );
+
+            gap: 28px;
         }
 
-        .hero h1 {
-            font-size: 27px;
+        /* Video card */
+
+        .video-card {
+            overflow: hidden;
+
+            background:
+                rgba(255, 255, 255, 0.92);
+
+            border:
+                1px solid rgba(255, 255, 255, 0.8);
+
+            border-radius: 16px;
+
+            box-shadow:
+                0 8px 30px rgba(79, 70, 229, 0.10);
+
+            transition:
+                transform 0.25s ease,
+                box-shadow 0.25s ease;
         }
-    }
-</style>
+
+        .video-card:hover {
+            transform: translateY(-6px);
+
+            box-shadow:
+                0 15px 35px rgba(79, 70, 229, 0.18);
+        }
+
+        /* Thumbnail */
+
+        .thumbnail {
+            display: block;
+
+            width: 100%;
+
+            aspect-ratio: 16 / 9;
+
+            border: none;
+
+            object-fit: cover;
+        }
+
+        /* Video information */
+
+        .video-info {
+            padding: 18px;
+        }
+
+        .video-title {
+            color: #172033;
+
+            font-size: 17px;
+
+            line-height: 1.45;
+
+            margin-bottom: 10px;
+        }
+
+        .channel {
+            color: #6366f1;
+
+            font-size: 14px;
+
+            font-weight: 600;
+
+            margin-bottom: 7px;
+        }
+
+        .published {
+            color: #94a3b8;
+
+            font-size: 13px;
+        }
+
+        /* Responsive */
+
+        @media (max-width: 800px) {
+
+            .navbar {
+                padding: 0 20px;
+            }
+
+            .search {
+                width: 280px;
+            }
+
+            .container {
+                padding: 35px 20px;
+            }
+
+            .hero h1 {
+                font-size: 30px;
+            }
+
+        }
+
+        @media (max-width: 600px) {
+
+            .navbar {
+                height: auto;
+
+                padding: 15px 20px;
+
+                gap: 15px;
+
+                flex-direction: column;
+            }
+
+            .search {
+                width: 100%;
+            }
+
+            .container {
+                padding: 30px 15px;
+            }
+
+            .videos {
+                grid-template-columns: 1fr;
+
+                gap: 20px;
+            }
+
+            .hero h1 {
+                font-size: 27px;
+            }
+
+        }
+
+    </style>
 
 </head>
 
@@ -319,11 +338,19 @@
     <nav class="navbar">
 
         <div class="logo">
-            <span class="logo-icon">▶</span>
-            <span>VideoRec</span>
+
+            <span class="logo-icon">
+                ▶
+            </span>
+
+            <span>
+                VideoRec
+            </span>
+
         </div>
 
         <input
+            id="searchInput"
             class="search"
             type="text"
             placeholder="Search videos..."
@@ -336,9 +363,13 @@
 
     <main class="container">
 
+        <!-- Hero -->
+
         <section class="hero">
 
-            <h1>Discover videos</h1>
+            <h1>
+                Discover videos
+            </h1>
 
             <p>
                 Explore videos and discover something new to learn.
@@ -353,36 +384,51 @@
 
             {% for video in videos %}
 
-            <article class="video-card">
+            <article
+                class="video-card"
+                data-title="{{ video.title }}"
+                data-channel="{{ video.channel }}"
+            >
 
-    <a
-        href="/video/{{ video.video_id }}"
-        class="video-link"
-    >
-        <img
-            class="thumbnail"
-            src="{{ video.thumbnail }}"
-            alt="{{ video.title }}"
-        >
-    </a>
+                <a
+                    href="/video/{{ video.video_id }}"
+                    class="video-link"
+                >
 
-    <div class="video-info">
+                    <img
+                        class="thumbnail"
+                        src="{{ video.thumbnail }}"
+                        alt="{{ video.title }}"
+                    >
 
-        <h2 class="video-title">
-            {{ video.title }}
-        </h2>
+                </a>
 
-        <p class="channel">
-            {{ video.channel }}
-        </p>
 
-        <p class="published">
-            {{ video.published_at }}
-        </p>
+                <div class="video-info">
 
-    </div>
+                    <h2 class="video-title">
 
-</article>
+                        {{ video.title }}
+
+                    </h2>
+
+
+                    <p class="channel">
+
+                        {{ video.channel }}
+
+                    </p>
+
+
+                    <p class="published">
+
+                        {{ video.published_at }}
+
+                    </p>
+
+                </div>
+
+            </article>
 
             {% endfor %}
 
@@ -390,5 +436,60 @@
 
     </main>
 
+
+    <!-- Search functionality -->
+
+    <script>
+
+        const searchInput =
+            document.getElementById("searchInput");
+
+        const videoCards =
+            document.querySelectorAll(".video-card");
+
+
+        searchInput.addEventListener(
+            "input",
+            function () {
+
+                const searchTerm =
+                    this.value
+                        .toLowerCase()
+                        .trim();
+
+
+                videoCards.forEach(
+                    function (card) {
+
+                        const title =
+                            card.dataset.title
+                                .toLowerCase();
+
+
+                        const channel =
+                            card.dataset.channel
+                                .toLowerCase();
+
+
+                        const matches =
+                            title.includes(searchTerm) ||
+                            channel.includes(searchTerm);
+
+
+                        card.style.display =
+                            matches
+                                ? ""
+                                : "none";
+
+                    }
+                );
+
+            }
+        );
+
+    </script>
+
 </body>
+
 </html>
+

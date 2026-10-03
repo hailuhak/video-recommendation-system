@@ -223,7 +223,83 @@
 
     font-weight: 600;
 }
+.video-details {
+    margin-top: 24px;
+    margin-bottom: 45px;
+}
 
+.video-details h1 {
+    font-size: 28px;
+    line-height: 1.35;
+    color: #172033;
+    margin-bottom: 14px;
+}
+
+.video-meta {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    flex-wrap: wrap;
+}
+
+.video-meta .channel {
+    color: #6366f1;
+    font-size: 15px;
+    font-weight: 600;
+}
+
+.video-meta .published {
+    color: #94a3b8;
+    font-size: 14px;
+}
+.video-player {
+    width: 100%;
+    max-width: 1100px;
+    margin: 0 auto;
+    aspect-ratio: 16 / 9;
+    overflow: hidden;
+    border-radius: 18px;
+    background: #000;
+    box-shadow:
+        0 15px 40px rgba(79, 70, 229, 0.15);
+}
+
+.video-player iframe {
+    width: 100%;
+    height: 100%;
+    display: block;
+    border: none;
+}
+.recommendations {
+    margin-top: 20px;
+}
+
+.recommendation-header {
+    margin-bottom: 22px;
+}
+
+.recommendation-header h2 {
+    color: #172033;
+    font-size: 24px;
+    margin-bottom: 6px;
+}
+
+.recommendation-header p {
+    color: #64748b;
+    font-size: 14px;
+}.back-button {
+    display: inline-block;
+    margin-bottom: 18px;
+    color: #6366f1;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 600;
+    transition: color 0.2s ease;
+}
+
+.back-button:hover {
+    color: #4338ca;
+}
     </style>
 
 </head>
@@ -249,45 +325,54 @@
 
 
     <main class="container">
+<a href="/" class="back-button">
+    ← Back to videos
+</a>
+       <div class="video-player">
 
-        <iframe
-            class="player"
-            src="https://www.youtube.com/embed/{{ video.video_id }}"
-            title="{{ video.title }}"
-            allow="
-                accelerometer;
-                autoplay;
-                clipboard-write;
-                encrypted-media;
-                gyroscope;
-                picture-in-picture
-            "
-            allowfullscreen>
-        </iframe>
+    <iframe
+        src="https://www.youtube.com/embed/{{ video.video_id }}"
+        title="{{ video.title }}"
+        allowfullscreen
+    ></iframe>
+
+</div>
 
 
-        <section class="video-info">
+      <div class="video-details">
 
-            <h1 class="video-title">
-                {{ video.title }}
-            </h1>
+    <h1>
+        {{ video.title }}
+    </h1>
 
-            <p class="channel">
-                {{ video.channel }}
-            </p>
+    <div class="video-meta">
 
-            <p class="published">
-                Published: {{ video.published_at }}
-            </p>
+        <span class="channel">
+            {{ video.channel }}
+        </span>
 
-        </section>
+        <span class="published">
+            Published {{ video.published_at[:10] }}
+        </span>
+
+    </div>
+
+</div>
 
 
-       <section class="recommendations">
+  <section class="recommendations">
 
-    <h2>
-        Recommended for you
-    </h2>
+    <div class="recommendation-header">
+
+        <h2>
+            Recommended for you
+        </h2>
+
+        <p>
+            Videos similar to what you're watching
+        </p>
+
+    </div>
 
     <div class="recommendation-grid">
 
