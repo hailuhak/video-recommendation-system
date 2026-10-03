@@ -345,6 +345,62 @@
 
 .no-results p {
     font-size: 15px;
+}.video-count {
+    margin-bottom: 18px;
+
+    color: #64748b;
+
+    font-size: 14px;
+
+    font-weight: 600;
+}.thumbnail-container {
+    position: relative;
+    overflow: hidden;
+}
+
+.play-button {
+    position: absolute;
+
+    top: 50%;
+    left: 50%;
+
+    transform:
+        translate(-50%, -50%);
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 52px;
+    height: 52px;
+
+    border-radius: 50%;
+
+    background:
+        rgba(99, 102, 241, 0.95);
+
+    color: white;
+
+    font-size: 20px;
+
+    padding-left: 3px;
+
+    opacity: 0;
+
+    transition:
+        opacity 0.2s ease,
+        transform 0.2s ease;
+
+    box-shadow:
+        0 6px 20px rgba(0, 0, 0, 0.2);
+}
+
+.thumbnail-container:hover .play-button {
+    opacity: 1;
+
+    transform:
+        translate(-50%, -50%)
+        scale(1.05);
 }
    
     </style>
@@ -397,7 +453,12 @@
 
         </section>
 
-
+<p
+    id="videoCount"
+    class="video-count"
+>
+    {{ videos|length }} videos
+</p>
         <!-- Videos -->
 
         <section class="videos">
@@ -411,18 +472,26 @@
                 data-channel="{{ video.channel }}"
             >
 
-                <a
-                    href="/video/{{ video.video_id }}"
-                    class="video-link"
-                >
+               <a
+    href="/video/{{ video.video_id }}"
+    class="video-link"
+>
 
-                    <img
-                        class="thumbnail"
-                        src="{{ video.thumbnail }}"
-                        alt="{{ video.title }}"
-                    >
+    <div class="thumbnail-container">
 
-                </a>
+        <img
+            class="thumbnail"
+            src="{{ video.thumbnail }}"
+            alt="{{ video.title }}"
+        >
+
+        <span class="play-button">
+            ▶
+        </span>
+
+    </div>
+
+</a>
 
 
                 <div class="video-info">
@@ -482,6 +551,9 @@
          const noResults =
            document.getElementById("noResults");   
 
+           const videoCount =
+          document.getElementById("videoCount");
+
 
         searchInput.addEventListener(
             "input",
@@ -520,6 +592,12 @@ noResults.style.display =
     visibleVideos === 0
         ? "block"
         : "none";
+
+
+ videoCount.textContent =
+    visibleVideos === 1
+        ? "1 video"
+        : `${visibleVideos} videos`;       
 
             }
         );
