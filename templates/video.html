@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>{{ video.title }} - VideoRec</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+
+            min-height: 100vh;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #eef2ff,
+                    #e0f2fe,
+                    #f5f3ff
+                );
+
+            color: #172033;
+        }
+
+        .navbar {
+            height: 72px;
+
+            display: flex;
+            align-items: center;
+
+            padding: 0 40px;
+
+            background: rgba(255, 255, 255, 0.85);
+
+            backdrop-filter: blur(12px);
+
+            border-bottom: 1px solid #ffffff;
+
+            box-shadow:
+                0 4px 20px rgba(79, 70, 229, 0.08);
+        }
+
+        .logo {
+            text-decoration: none;
+
+            display: flex;
+            align-items: center;
+
+            gap: 10px;
+
+            color: #172033;
+
+            font-size: 23px;
+            font-weight: 700;
+        }
+
+        .logo-icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            width: 38px;
+            height: 38px;
+
+            border-radius: 10px;
+
+            color: white;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #6366f1,
+                    #8b5cf6
+                );
+        }
+
+        .container {
+            max-width: 1100px;
+
+            margin: 0 auto;
+
+            padding: 40px 25px;
+        }
+
+        .player {
+            width: 100%;
+
+            aspect-ratio: 16 / 9;
+
+            border: none;
+
+            border-radius: 16px;
+
+            box-shadow:
+                0 15px 40px
+                rgba(79, 70, 229, 0.15);
+        }
+
+        .video-info {
+            margin-top: 25px;
+
+            padding: 25px;
+
+            background: rgba(255, 255, 255, 0.9);
+
+            border-radius: 16px;
+
+            box-shadow:
+                0 8px 30px
+                rgba(79, 70, 229, 0.08);
+        }
+
+        .video-title {
+            font-size: 28px;
+
+            line-height: 1.4;
+
+            margin-bottom: 12px;
+        }
+
+        .channel {
+            color: #6366f1;
+
+            font-weight: 600;
+
+            margin-bottom: 8px;
+        }
+
+        .published {
+            color: #94a3b8;
+
+            font-size: 14px;
+        }
+
+        .recommendations {
+            margin-top: 45px;
+        }
+
+        .recommendations h2 {
+            font-size: 24px;
+
+            margin-bottom: 20px;
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+    <nav class="navbar">
+
+        <a href="/" class="logo">
+
+            <span class="logo-icon">
+                ▶
+            </span>
+
+            <span>
+                VideoRec
+            </span>
+
+        </a>
+
+    </nav>
+
+
+    <main class="container">
+
+        <iframe
+            class="player"
+            src="https://www.youtube.com/embed/{{ video.video_id }}"
+            title="{{ video.title }}"
+            allow="
+                accelerometer;
+                autoplay;
+                clipboard-write;
+                encrypted-media;
+                gyroscope;
+                picture-in-picture
+            "
+            allowfullscreen>
+        </iframe>
+
+
+        <section class="video-info">
+
+            <h1 class="video-title">
+                {{ video.title }}
+            </h1>
+
+            <p class="channel">
+                {{ video.channel }}
+            </p>
+
+            <p class="published">
+                Published: {{ video.published_at }}
+            </p>
+
+        </section>
+
+
+        <section class="recommendations">
+
+            <h2>
+                Recommended for you
+            </h2>
+
+            <!-- ML recommendations will appear here -->
+
+        </section>
+
+    </main>
+
+</body>
+
+</html>
