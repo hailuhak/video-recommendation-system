@@ -155,6 +155,74 @@
 
             margin-bottom: 20px;
         }
+        .recommendation-grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(auto-fit, minmax(260px, 1fr));
+
+    gap: 22px;
+}
+
+.recommendation-card {
+    overflow: hidden;
+
+    display: block;
+
+    text-decoration: none;
+
+    color: inherit;
+
+    background: rgba(255, 255, 255, 0.9);
+
+    border-radius: 14px;
+
+    box-shadow:
+        0 8px 25px rgba(79, 70, 229, 0.08);
+
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.recommendation-card:hover {
+    transform: translateY(-5px);
+
+    box-shadow:
+        0 14px 30px rgba(79, 70, 229, 0.16);
+}
+
+.recommendation-card img {
+    display: block;
+
+    width: 100%;
+
+    aspect-ratio: 16 / 9;
+
+    object-fit: cover;
+}
+
+.recommendation-info {
+    padding: 15px;
+}
+
+.recommendation-info h3 {
+    font-size: 16px;
+
+    line-height: 1.4;
+
+    margin-bottom: 8px;
+
+    color: #172033;
+}
+
+.recommendation-info p {
+    color: #6366f1;
+
+    font-size: 13px;
+
+    font-weight: 600;
+}
 
     </style>
 
@@ -215,15 +283,45 @@
         </section>
 
 
-        <section class="recommendations">
+       <section class="recommendations">
 
-            <h2>
-                Recommended for you
-            </h2>
+    <h2>
+        Recommended for you
+    </h2>
 
-            <!-- ML recommendations will appear here -->
+    <div class="recommendation-grid">
 
-        </section>
+        {% for recommendation in recommendations %}
+
+        <a
+            href="/video/{{ recommendation.video_id }}"
+            class="recommendation-card"
+        >
+
+            <img
+                src="{{ recommendation.thumbnail }}"
+                alt="{{ recommendation.title }}"
+            >
+
+            <div class="recommendation-info">
+
+                <h3>
+                    {{ recommendation.title }}
+                </h3>
+
+                <p>
+                    {{ recommendation.channel }}
+                </p>
+
+            </div>
+
+        </a>
+
+        {% endfor %}
+
+    </div>
+
+</section>
 
     </main>
 
