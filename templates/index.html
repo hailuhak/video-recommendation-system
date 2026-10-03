@@ -325,8 +325,28 @@
                 font-size: 27px;
             }
 
-        }
+        }.no-results {
+    display: none;
 
+    text-align: center;
+
+    padding: 70px 20px;
+
+    color: #64748b;
+}
+
+.no-results h2 {
+    color: #172033;
+
+    font-size: 24px;
+
+    margin-bottom: 10px;
+}
+
+.no-results p {
+    font-size: 15px;
+}
+   
     </style>
 
 </head>
@@ -381,6 +401,7 @@
         <!-- Videos -->
 
         <section class="videos">
+         
 
             {% for video in videos %}
 
@@ -433,7 +454,18 @@
             {% endfor %}
 
         </section>
+       <div
+    id="noResults"
+    class="no-results"
+>
+    <h2>
+        No videos found
+    </h2>
 
+    <p>
+        Try searching for another title or channel.
+    </p>
+</div>
     </main>
 
 
@@ -447,6 +479,9 @@
         const videoCards =
             document.querySelectorAll(".video-card");
 
+         const noResults =
+           document.getElementById("noResults");   
+
 
         searchInput.addEventListener(
             "input",
@@ -458,31 +493,33 @@
                         .trim();
 
 
-                videoCards.forEach(
-                    function (card) {
+             let visibleVideos = 0;
 
-                        const title =
-                            card.dataset.title
-                                .toLowerCase();
+videoCards.forEach(function (card) {
 
+    const title =
+        card.dataset.title.toLowerCase();
 
-                        const channel =
-                            card.dataset.channel
-                                .toLowerCase();
+    const channel =
+        card.dataset.channel.toLowerCase();
 
+    const matches =
+        title.includes(searchTerm) ||
+        channel.includes(searchTerm);
 
-                        const matches =
-                            title.includes(searchTerm) ||
-                            channel.includes(searchTerm);
+    card.style.display =
+        matches ? "" : "none";
 
+    if (matches) {
+        visibleVideos++;
+    }
 
-                        card.style.display =
-                            matches
-                                ? ""
-                                : "none";
+});
 
-                    }
-                );
+noResults.style.display =
+    visibleVideos === 0
+        ? "block"
+        : "none";
 
             }
         );
