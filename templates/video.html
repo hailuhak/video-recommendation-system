@@ -1,4 +1,6 @@
+
 <!DOCTYPE html>
+
 <html lang="en">
 
 <head>
@@ -10,7 +12,8 @@
         content="width=device-width, initial-scale=1.0"
     >
 
-    <title>{{ video.title }} - VideoRec</title>
+    <title>{{ video.title }} | VideoRec</title>
+
 
     <style>
 
@@ -20,21 +23,26 @@
             padding: 0;
         }
 
+
         body {
             font-family: Arial, sans-serif;
-
             min-height: 100vh;
 
             background:
                 linear-gradient(
                     135deg,
-                    #eef2ff,
-                    #e0f2fe,
-                    #f5f3ff
+                    #eef2ff 0%,
+                    #e0f2fe 45%,
+                    #f5f3ff 100%
                 );
 
             color: #172033;
         }
+
+
+        /* =========================
+           Navigation
+        ========================= */
 
         .navbar {
             height: 72px;
@@ -44,19 +52,24 @@
 
             padding: 0 40px;
 
-            background: rgba(255, 255, 255, 0.85);
+            background:
+                rgba(255, 255, 255, 0.85);
 
             backdrop-filter: blur(12px);
 
-            border-bottom: 1px solid #ffffff;
+            border-bottom:
+                1px solid rgba(255, 255, 255, 0.7);
 
             box-shadow:
                 0 4px 20px rgba(79, 70, 229, 0.08);
+
+            position: sticky;
+            top: 0;
+            z-index: 100;
         }
 
-        .logo {
-            text-decoration: none;
 
+        .logo {
             display: flex;
             align-items: center;
 
@@ -64,9 +77,12 @@
 
             color: #172033;
 
+            text-decoration: none;
+
             font-size: 23px;
             font-weight: 700;
         }
+
 
         .logo-icon {
             display: flex;
@@ -86,220 +102,334 @@
                     #6366f1,
                     #8b5cf6
                 );
+
+            font-size: 17px;
+
+            box-shadow:
+                0 6px 15px rgba(99, 102, 241, 0.3);
         }
 
+
+        /* =========================
+           Main container
+        ========================= */
+
         .container {
+            max-width: 1200px;
+
+            margin: 0 auto;
+
+            padding: 40px;
+        }
+
+
+        /* =========================
+           Back button
+        ========================= */
+
+        .back-button {
+            display: inline-block;
+
+            margin-bottom: 18px;
+
+            color: #6366f1;
+
+            text-decoration: none;
+
+            font-size: 14px;
+
+            font-weight: 600;
+
+            transition:
+                color 0.2s ease;
+        }
+
+
+        .back-button:hover {
+            color: #4338ca;
+        }
+
+
+        /* =========================
+           Video player
+        ========================= */
+
+        .video-player {
+            width: 100%;
+
             max-width: 1100px;
 
             margin: 0 auto;
 
-            padding: 40px 25px;
-        }
-
-        .player {
-            width: 100%;
-
             aspect-ratio: 16 / 9;
 
+            overflow: hidden;
+
+            border-radius: 18px;
+
+            background: #000;
+
+            box-shadow:
+                0 15px 40px rgba(79, 70, 229, 0.15);
+        }
+
+
+        .video-player iframe {
+            width: 100%;
+            height: 100%;
+
+            display: block;
+
             border: none;
-
-            border-radius: 16px;
-
-            box-shadow:
-                0 15px 40px
-                rgba(79, 70, 229, 0.15);
         }
 
-        .video-info {
-            margin-top: 25px;
 
-            padding: 25px;
+        /* =========================
+           Video details
+        ========================= */
 
-            background: rgba(255, 255, 255, 0.9);
+        .video-details {
+            margin-top: 24px;
 
-            border-radius: 16px;
-
-            box-shadow:
-                0 8px 30px
-                rgba(79, 70, 229, 0.08);
+            margin-bottom: 45px;
         }
 
-        .video-title {
-            font-size: 28px;
 
-            line-height: 1.4;
+        .watching-label {
+            margin-bottom: 8px;
 
-            margin-bottom: 12px;
-        }
-
-        .channel {
             color: #6366f1;
 
-            font-weight: 600;
+            font-size: 12px;
 
-            margin-bottom: 8px;
+            font-weight: 700;
+
+            letter-spacing: 1.2px;
         }
 
-        .published {
+
+        .video-details h1 {
+            font-size: 28px;
+
+            line-height: 1.35;
+
+            color: #172033;
+
+            margin-bottom: 14px;
+        }
+
+
+        .video-meta {
+            display: flex;
+
+            align-items: center;
+
+            gap: 18px;
+
+            flex-wrap: wrap;
+        }
+
+
+        .video-meta .channel {
+            color: #6366f1;
+
+            font-size: 15px;
+
+            font-weight: 600;
+        }
+
+
+        .video-meta .published {
             color: #94a3b8;
 
             font-size: 14px;
         }
 
+
+        /* =========================
+           Recommendations
+        ========================= */
+
         .recommendations {
-            margin-top: 45px;
+            margin-top: 20px;
         }
 
-        .recommendations h2 {
+
+        .recommendation-header {
+            margin-bottom: 30px;
+        }
+
+
+        .recommendation-header h2 {
+            color: #172033;
+
             font-size: 24px;
 
-            margin-bottom: 20px;
+            margin-bottom: 6px;
         }
+
+
+        .recommendation-header p {
+            color: #64748b;
+
+            font-size: 14px;
+        }
+
+
         .recommendation-grid {
-    display: grid;
+            display: grid;
 
-    grid-template-columns:
-        repeat(auto-fit, minmax(260px, 1fr));
+            grid-template-columns:
+                repeat(
+                    auto-fit,
+                    minmax(260px, 1fr)
+                );
 
-    gap: 22px;
-}
+            gap: 22px;
+        }
 
-.recommendation-card {
-    overflow: hidden;
 
-    display: block;
+        .recommendation-card {
+            overflow: hidden;
 
-    text-decoration: none;
+            display: block;
 
-    color: inherit;
+            text-decoration: none;
 
-    background: rgba(255, 255, 255, 0.9);
+            color: inherit;
 
-    border-radius: 14px;
+            background:
+                rgba(255, 255, 255, 0.9);
 
-    box-shadow:
-        0 8px 25px rgba(79, 70, 229, 0.08);
+            border:
+                1px solid rgba(255, 255, 255, 0.8);
 
-    transition:
-        transform 0.2s ease,
-        box-shadow 0.2s ease;
-}
+            border-radius: 14px;
 
-.recommendation-card:hover {
-    transform: translateY(-5px);
+            box-shadow:
+                0 8px 25px rgba(79, 70, 229, 0.08);
 
-    box-shadow:
-        0 14px 30px rgba(79, 70, 229, 0.16);
-}
+            transition:
+                transform 0.2s ease,
+                box-shadow 0.2s ease;
+        }
 
-.recommendation-card img {
-    display: block;
 
-    width: 100%;
+        .recommendation-card:hover {
+            transform: translateY(-5px);
 
-    aspect-ratio: 16 / 9;
+            box-shadow:
+                0 14px 30px rgba(79, 70, 229, 0.16);
+        }
 
-    object-fit: cover;
-}
 
-.recommendation-info {
-    padding: 15px;
-}
+        .recommendation-card img {
+            display: block;
 
-.recommendation-info h3 {
-    font-size: 16px;
+            width: 100%;
 
-    line-height: 1.4;
+            aspect-ratio: 16 / 9;
 
-    margin-bottom: 8px;
+            object-fit: cover;
+        }
 
-    color: #172033;
-}
 
-.recommendation-info p {
-    color: #6366f1;
+        .recommendation-info {
+            padding: 15px;
+        }
 
-    font-size: 13px;
 
-    font-weight: 600;
-}
-.video-details {
-    margin-top: 24px;
-    margin-bottom: 45px;
-}
+        .recommendation-info h3 {
+            font-size: 16px;
 
-.video-details h1 {
-    font-size: 28px;
-    line-height: 1.35;
-    color: #172033;
-    margin-bottom: 14px;
-}
+            line-height: 1.4;
 
-.video-meta {
-    display: flex;
-    align-items: center;
-    gap: 18px;
-    flex-wrap: wrap;
-}
+            margin-bottom: 8px;
 
-.video-meta .channel {
-    color: #6366f1;
-    font-size: 15px;
-    font-weight: 600;
-}
+            color: #172033;
+        }
 
-.video-meta .published {
-    color: #94a3b8;
-    font-size: 14px;
-}
-.video-player {
-    width: 100%;
-    max-width: 1100px;
-    margin: 0 auto;
-    aspect-ratio: 16 / 9;
-    overflow: hidden;
-    border-radius: 18px;
-    background: #000;
-    box-shadow:
-        0 15px 40px rgba(79, 70, 229, 0.15);
-}
 
-.video-player iframe {
-    width: 100%;
-    height: 100%;
-    display: block;
-    border: none;
-}
-.recommendations {
-    margin-top: 20px;
-}
+        .recommendation-info p {
+            color: #6366f1;
 
-.recommendation-header {
-    margin-bottom: 22px;
-}
+            font-size: 13px;
 
-.recommendation-header h2 {
-    color: #172033;
-    font-size: 24px;
-    margin-bottom: 6px;
-}
+            font-weight: 600;
+        }
 
-.recommendation-header p {
-    color: #64748b;
-    font-size: 14px;
-}.back-button {
-    display: inline-block;
-    margin-bottom: 18px;
-    color: #6366f1;
-    text-decoration: none;
-    font-size: 14px;
-    font-weight: 600;
-    transition: color 0.2s ease;
-}
 
-.back-button:hover {
-    color: #4338ca;
-}
+        /* =========================
+           Responsive
+        ========================= */
+
+        @media (max-width: 800px) {
+
+            .navbar {
+                padding: 0 20px;
+            }
+
+
+            .container {
+                padding: 30px 20px;
+            }
+
+
+            .video-details h1 {
+                font-size: 24px;
+            }
+
+        }
+
+
+        @media (max-width: 600px) {
+
+            .navbar {
+                height: 64px;
+
+                padding: 0 15px;
+            }
+
+
+            .logo {
+                font-size: 20px;
+            }
+
+
+            .logo-icon {
+                width: 34px;
+                height: 34px;
+            }
+
+
+            .container {
+                padding: 25px 15px;
+            }
+
+
+            .video-player {
+                border-radius: 12px;
+            }
+
+
+            .video-details {
+                margin-bottom: 35px;
+            }
+
+
+            .video-details h1 {
+                font-size: 21px;
+            }
+
+
+            .recommendation-grid {
+                grid-template-columns: 1fr;
+
+                gap: 18px;
+            }
+
+        }
+
     </style>
 
 </head>
@@ -307,9 +437,15 @@
 
 <body>
 
+
+    <!-- Navigation -->
+
     <nav class="navbar">
 
-        <a href="/" class="logo">
+        <a
+            href="/"
+            class="logo"
+        >
 
             <span class="logo-icon">
                 ▶
@@ -324,92 +460,123 @@
     </nav>
 
 
+    <!-- Main content -->
+
     <main class="container">
-<a href="/" class="back-button">
-    ← Back to videos
-</a>
-       <div class="video-player">
-
-    <iframe
-        src="https://www.youtube.com/embed/{{ video.video_id }}"
-        title="{{ video.title }}"
-        allowfullscreen
-    ></iframe>
-
-</div>
 
 
-      <div class="video-details">
-
-    <h1>
-        {{ video.title }}
-    </h1>
-
-    <div class="video-meta">
-
-        <span class="channel">
-            {{ video.channel }}
-        </span>
-
-        <span class="published">
-            Published {{ video.published_at[:10] }}
-        </span>
-
-    </div>
-
-</div>
-
-
-  <section class="recommendations">
-
-    <div class="recommendation-header">
-
-        <h2>
-            Recommended for you
-        </h2>
-
-        <p>
-            Videos similar to what you're watching
-        </p>
-
-    </div>
-
-    <div class="recommendation-grid">
-
-        {% for recommendation in recommendations %}
+        <!-- Back navigation -->
 
         <a
-            href="/video/{{ recommendation.video_id }}"
-            class="recommendation-card"
+            href="/"
+            class="back-button"
         >
+            ← Back to videos
+        </a>
 
-            <img
-                src="{{ recommendation.thumbnail }}"
-                alt="{{ recommendation.title }}"
-            >
 
-            <div class="recommendation-info">
+        <!-- YouTube player -->
 
-                <h3>
-                    {{ recommendation.title }}
-                </h3>
+        <div class="video-player">
+
+            <iframe
+                src="https://www.youtube.com/embed/{{ video.video_id }}"
+                title="{{ video.title }}"
+                allowfullscreen
+            ></iframe>
+
+        </div>
+
+
+        <!-- Video information -->
+
+        <div class="video-details">
+
+            <p class="watching-label">
+                NOW WATCHING
+            </p>
+
+
+            <h1>
+                {{ video.title }}
+            </h1>
+
+
+            <div class="video-meta">
+
+                <span class="channel">
+                    {{ video.channel }}
+                </span>
+
+
+                <span class="published">
+                    Published {{ video.published_at[:10] }}
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <!-- Recommendations -->
+
+        <section class="recommendations">
+
+            <div class="recommendation-header">
+
+                <h2>
+                    Recommended for you
+                </h2>
+
 
                 <p>
-                    {{ recommendation.channel }}
+                    Videos similar to what you're watching
                 </p>
 
             </div>
 
-        </a>
 
-        {% endfor %}
+            <div class="recommendation-grid">
 
-    </div>
+                {% for recommendation in recommendations %}
 
-</section>
+                <a
+                    href="/video/{{ recommendation.video_id }}"
+                    class="recommendation-card"
+                >
+
+                    <img
+                        src="{{ recommendation.thumbnail }}"
+                        alt="{{ recommendation.title }}"
+                    >
+
+
+                    <div class="recommendation-info">
+
+                        <h3>
+                            {{ recommendation.title }}
+                        </h3>
+
+
+                        <p>
+                            {{ recommendation.channel }}
+                        </p>
+
+                    </div>
+
+                </a>
+
+                {% endfor %}
+
+            </div>
+
+        </section>
+
 
     </main>
+
 
 </body>
 
 </html>
+
