@@ -16,7 +16,7 @@ youtube = build(
 )
 
 
-def search_videos(query, max_results=10):
+def search_videos(query, max_results=50):
     request = youtube.search().list(
         part="snippet",
         q=query,
@@ -33,6 +33,7 @@ def extract_video_data(response):
     videos = []
 
     for item in response["items"]:
+
         video = {
             "video_id": item["id"]["videoId"],
             "title": item["snippet"]["title"],
@@ -47,30 +48,74 @@ def extract_video_data(response):
     return videos
 
 
-def save_videos(videos, filename="data/youtube_videos.csv"):
+def collect_videos(queries, videos_per_query=50):
+
+    all_videos = []
+
+    for query in queries:
+
+        print(f"Searching YouTube for: {query}")
+
+        response = search_videos(
+            query,
+            videos_per_query,
+        )
+
+        videos = extract_video_data(response)
+
+        all_videos.extend(videos)
+
+        print(
+            f"Collected {len(videos)} videos for '{query}'"
+        )
+
+    return all_videos
+
+
+def remove_duplicates(videos):
+
     df = pd.DataFrame(videos)
 
-    df.to_csv(filename, index=False)
+    df = df.drop_duplicates(
+        subset="video_id"
+    )
 
-    print(f"Saved {len(df)} videos to {filename}")
-
-
-# Search YouTube
-results = search_videos("Python tutorial", 5)
-
-# Extract useful information
-videos = extract_video_data(results)
-
-# Save the data
-save_videos(videos)
+    return df
 
 
-# Display the collected videos
-for video in videos:
-    print("\nVideo:")
-    print("ID:", video["video_id"])
-    print("Title:", video["title"])
-    print("Channel:", video["channel"])
-    print("Published:", video["published_at"])
-    print("Thumbnail:", video["thumbnail"])
+def save_videos(
+    videos,
+    filename="data/youtube_videos.csv",
+):
 
+    videos.to_csv(
+        filename,
+        index=False,
+    )
+
+    print(
+        f"\nSaved {len(videos)} unique videos to {filename}"
+    )
+
+
+if __name__ == "__main__":
+
+    queries = [
+        "Python tutorial",
+        "JavaScript tutorial",
+        "React tutorial",
+        "Linux tutorial",
+        "Cybersecurity tutorial",
+        "Docker tutorial",
+        "Machine learning tutorial",
+        "Web development tutorial",
+    ]
+
+    videos = collect_videos(
+        queries,
+        videos_per_query=50,
+    )
+
+    videos = remove_duplicates(videos)
+
+    save_videos(videos)

@@ -1,51 +1,141 @@
 import pandas as pd
+
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 
 
-videos = pd.read_csv("data/youtube_videos.csv")
-
-
-videos["text"] = (
-    videos["title"].fillna("")
-    + " "
-    + videos["description"].fillna("")
+# Load YouTube dataset
+videos = pd.read_csv(
+    "data/youtube_videos.csv"
 )
 
 
-vectorizer = TfidfVectorizer()
+# Handle missing descriptions
+videos["description"] = (
+    videos["description"]
+    .fillna("")
+)
 
-tfidf_matrix = vectorizer.fit_transform(videos["text"])
+
+# Combine title and description
+videos["text"] = (
+    videos["title"]
+    + " "
+    + videos["title"]
+    + " "
+    + videos["title"]
+    + " "
+    + videos["description"]
+)
+
+# Convert text to lowercase
+videos["text"] = (
+    videos["text"]
+    .str.lower()
+)
 
 
-similarity_matrix = cosine_similarity(tfidf_matrix)
+# Create TF-IDF vectorizer
+vectorizer = TfidfVectorizer(
+    stop_words="english",
+    min_df=2,
+    max_df=0.90,
+)
+
+# Convert text into numerical vectors
+tfidf_matrix = vectorizer.fit_transform(
+    videos["text"]
+)
 
 
-print("Number of videos:", len(videos))
+# Calculate similarity between all videos
+similarity_matrix = cosine_similarity(
+    tfidf_matrix
+)
+
+
+print("Dataset shape:")
+print(videos.shape)
+
+
+print("\nTF-IDF matrix shape:")
+print(tfidf_matrix.shape)
+
+
+print("\nNumber of features:")
+print(
+    len(
+        vectorizer.get_feature_names_out()
+    )
+)
+
+
+print("\nSimilarity matrix shape:")
+print(
+    similarity_matrix.shape
+)
+
 
 print(
-    "Number of features:",
-    len(vectorizer.get_feature_names_out()),
+    "\nSimilarity between first video and itself:"
 )
 
-print("TF-IDF matrix shape:", tfidf_matrix.shape)
+print(
+    similarity_matrix[0][0]
+)
 
 
-def recommend_videos(video_index, number_of_recommendations=3):
-    similarities = similarity_matrix[video_index]
+# Recommendation function
+def recommend_videos(
+    video_index,
+    number_of_recommendations=5,
+):
 
-    similar_indices = similarities.argsort()[::-1]
-
-    recommended_indices = similar_indices[
-        1:number_of_recommendations + 1
+    similarities = similarity_matrix[
+        video_index
     ]
 
-    return videos.iloc[recommended_indices]
+    similar_indices = (
+        similarities
+        .argsort()[::-1]
+    )
+
+    recommended_indices = (
+        similar_indices[
+            1:number_of_recommendations + 1
+        ]
+    )
+
+    recommendations = videos.iloc[
+        recommended_indices
+    ].copy()
+
+    # Add similarity scores
+    recommendations["similarity"] = (
+        similarities[recommended_indices]
+    )
+
+    return recommendations
 
 
-print("\nRecommendations:")
+# Test recommendations
+print(
+    "\nRecommendations for first video:"
+)
 
-recommendations = recommend_videos(0)
+recommendations = recommend_videos(
+    video_index=0,
+    number_of_recommendations=5,
+)
+
 
 for _, video in recommendations.iterrows():
-    print(video["title"])
+
+    print(
+        f"- {video['title']}"
+    )
+
+    print(
+        f"  Similarity: "
+        f"{video['similarity']:.3f}"
+    )
