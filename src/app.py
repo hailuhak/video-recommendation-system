@@ -1,6 +1,5 @@
 
 import os
-
 import pandas as pd
 from flask import Flask, render_template
 
@@ -9,6 +8,7 @@ from recommender import (
     create_similarity_matrix,
     recommend_videos,
 )
+from interactions import record_interaction
 
 # Get the project root directory
 project_root = os.path.dirname(
@@ -65,6 +65,12 @@ def video(video_id):
 
     if selected_video.empty:
         return "Video not found", 404
+
+    record_interaction(
+    user_id="user_1",
+    video_id=video_id,
+    event_type="view",
+)
 
     selected_video = selected_video.iloc[0].to_dict()
 
