@@ -75,36 +75,101 @@ def create_user_profile(
     tfidf_matrix,
 ):
     """
-    Create a user profile from videos
-    the user has watched.
+    Create a weighted user profile.
+
+    Views have a weight of 1.
+    Likes have a weight of 3.
+
+    Multiple interactions with the same video
+    are combined into one preference score.
     """
 
-    watched_video_ids = interactions[
-        interactions["event_type"] == "view"
-    ]["video_id"].tolist()
-
-    watched_indices = videos.index[
-        videos["video_id"].isin(
-            watched_video_ids
+    # Keep only interactions that should
+    # influence the user profile.
+    relevant_interactions = interactions[
+        interactions["event_type"].isin(
+            ["view", "like"]
         )
-    ].tolist()
+    ].copy()
 
-    if not watched_indices:
+    if relevant_interactions.empty:
         return None
 
-    watched_vectors = tfidf_matrix[
-        watched_indices
+    # Assign a weight to each interaction.
+    relevant_interactions["weight"] = (
+        relevant_interactions["event_type"]
+        .map(
+            {
+                "view": 1.0,
+                "like": 3.0,
+            }
+        )
+    )
+
+    # Remove interactions for videos that
+    # are not present in our dataset.
+    relevant_interactions = (
+        relevant_interactions[
+            relevant_interactions["video_id"].isin(
+                videos["video_id"]
+            )
+        ]
+    )
+
+    if relevant_interactions.empty:
+        return None
+
+    # Combine all interactions belonging
+    # to the same video.
+    video_weights = (
+        relevant_interactions
+        .groupby("video_id")["weight"]
+        .sum()
+    )
+
+    # Find the corresponding rows in the
+    # video dataset.
+    profile_videos = videos[
+        videos["video_id"].isin(
+            video_weights.index
+        )
     ]
 
-    user_profile = watched_vectors.mean(
-        axis=0
+    # Keep the order of the videos and
+    # create matching weights.
+    weights = (
+        profile_videos["video_id"]
+        .map(video_weights)
+        .to_numpy()
+    )
+
+    # Get the TF-IDF vectors for these videos.
+    video_indices = profile_videos.index.tolist()
+
+    interaction_vectors = tfidf_matrix[
+        video_indices
+    ]
+
+    # Apply the preference weights.
+    weighted_vectors = (
+        interaction_vectors.multiply(
+            weights[:, None]
+        )
+    )
+
+    # Calculate the weighted average.
+    total_weight = weights.sum()
+
+    user_profile = (
+        weighted_vectors.sum(
+            axis=0
+        )
+        / total_weight
     )
 
     return np.asarray(
         user_profile
     )
-
-
 def recommend_for_user(
     videos,
     interactions,
