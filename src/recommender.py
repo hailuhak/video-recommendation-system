@@ -1,5 +1,7 @@
+
 import pandas as pd
 import numpy as np
+
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 
@@ -7,7 +9,6 @@ from sklearn.metrics.pairwise import cosine_similarity
 def load_videos(
     filename="data/youtube_videos.csv"
 ):
-
     videos = pd.read_csv(
         filename
     )
@@ -37,6 +38,7 @@ def load_videos(
 
     return videos
 
+
 def create_tfidf_model(videos):
 
     vectorizer = TfidfVectorizer(
@@ -45,11 +47,15 @@ def create_tfidf_model(videos):
         max_df=0.90,
     )
 
-    tfidf_matrix = vectorizer.fit_transform(
-        videos["text"]
+    tfidf_matrix = (
+        vectorizer.fit_transform(
+            videos["text"]
+        )
     )
 
     return vectorizer, tfidf_matrix
+
+
 def create_similarity_matrix(
     tfidf_matrix
 ):
@@ -61,6 +67,8 @@ def create_similarity_matrix(
     )
 
     return similarity_matrix
+
+
 def create_user_profile(
     videos,
     interactions,
@@ -95,6 +103,8 @@ def create_user_profile(
     return np.asarray(
         user_profile
     )
+
+
 def recommend_for_user(
     videos,
     interactions,
@@ -150,3 +160,93 @@ def recommend_for_user(
     return recommendations.head(
         number_of_recommendations
     )
+
+
+def recommend_videos(
+    videos,
+    similarity_matrix,
+    video_id,
+    number_of_recommendations=5,
+):
+    """
+    Recommend videos similar to a given video.
+    """
+
+    video_index = videos.index[
+        videos["video_id"] == video_id
+    ].tolist()
+
+    if not video_index:
+        return pd.DataFrame()
+
+    video_index = video_index[0]
+
+    similarities = (
+        similarity_matrix[
+            video_index
+        ]
+    )
+
+    similar_indices = (
+        similarities
+        .argsort()[::-1]
+    )
+
+    recommended_indices = [
+        index
+        for index in similar_indices
+        if index != video_index
+    ][
+        :number_of_recommendations
+    ]
+
+    recommendations = (
+        videos.iloc[
+            recommended_indices
+        ].copy()
+    )
+
+    recommendations["similarity"] = (
+        similarities[
+            recommended_indices
+        ]
+    )
+
+    return recommendations
+
+
+def precision_at_k(
+    recommendations,
+    liked_video_ids,
+    k=5,
+):
+    """
+    Calculate Precision@K.
+
+    Precision@K =
+    relevant recommendations / K
+    """
+
+    top_recommendations = (
+        recommendations.head(k)
+    )
+
+    recommended_video_ids = set(
+        top_recommendations["video_id"]
+    )
+
+    liked_video_ids = set(
+        liked_video_ids
+    )
+
+    relevant_recommendations = (
+        recommended_video_ids
+        & liked_video_ids
+    )
+
+    precision = (
+        len(relevant_recommendations)
+        / k
+    )
+
+    return precision

@@ -1,18 +1,25 @@
-
 import os
-import pandas as pd
-from flask import Flask, render_template
+
+from flask import (
+    Flask,
+    render_template,
+    jsonify,
+)
+
+from interactions import record_interaction
 
 from recommender import (
     load_videos,
+    create_tfidf_model,
     create_similarity_matrix,
     recommend_videos,
 )
-from interactions import record_interaction
 
-# Get the project root directory
+
 project_root = os.path.dirname(
-    os.path.dirname(os.path.abspath(__file__))
+    os.path.dirname(
+        os.path.abspath(__file__)
+    )
 )
 
 
@@ -25,38 +32,47 @@ app = Flask(
 )
 
 
+VIDEOS_FILE = os.path.join(
+    project_root,
+    "data",
+    "youtube_videos.csv",
+)
+
+
 @app.route("/")
 def home():
 
-    videos = pd.read_csv(
-        os.path.join(
-            project_root,
-            "data",
-            "youtube_videos.csv",
-        )
+    videos = load_videos(
+        VIDEOS_FILE
     )
-
-    print(f"Loaded {len(videos)} videos")
 
     return render_template(
         "index.html",
-        videos=videos.to_dict(orient="records"),
+        videos=videos.to_dict(
+            orient="records"
+        ),
     )
 
-id="gr3v8a"
+
 @app.route("/video/<video_id>")
 def video(video_id):
 
     videos = load_videos(
-        os.path.join(
-            project_root,
-            "data",
-            "youtube_videos.csv",
+        VIDEOS_FILE
+    )
+
+    # Create the shared TF-IDF model
+    vectorizer, tfidf_matrix = (
+        create_tfidf_model(
+            videos
         )
     )
 
-    similarity_matrix = create_similarity_matrix(
-        videos
+    # Create video similarity matrix
+    similarity_matrix = (
+        create_similarity_matrix(
+            tfidf_matrix
+        )
     )
 
     selected_video = videos[
@@ -66,13 +82,18 @@ def video(video_id):
     if selected_video.empty:
         return "Video not found", 404
 
+    # Record the user's view
     record_interaction(
-    user_id="user_1",
-    video_id=video_id,
-    event_type="view",
-)
+        user_id="user_1",
+        video_id=video_id,
+        event_type="view",
+    )
 
-    selected_video = selected_video.iloc[0].to_dict()
+    selected_video = (
+        selected_video
+        .iloc[0]
+        .to_dict()
+    )
 
     recommendations = recommend_videos(
         videos,
@@ -81,8 +102,11 @@ def video(video_id):
         number_of_recommendations=3,
     )
 
-    recommendations = recommendations.to_dict(
-        orient="records"
+    recommendations = (
+        recommendations
+        .to_dict(
+            orient="records"
+        )
     )
 
     return render_template(
@@ -92,13 +116,14 @@ def video(video_id):
     )
 
 
+@app.route(
+    "/video/<video_id>/like",
+    methods=["POST"],
+)
+def like_video(video_id):
 
-    videos = pd.read_csv(
-        os.path.join(
-            project_root,
-            "data",
-            "youtube_videos.csv",
-        )
+    videos = load_videos(
+        VIDEOS_FILE
     )
 
     selected_video = videos[
@@ -106,19 +131,28 @@ def video(video_id):
     ]
 
     if selected_video.empty:
-        return "Video not found", 404
+        return jsonify(
+            {
+                "error": "Video not found"
+            }
+        ), 404
 
-    selected_video = selected_video.iloc[0].to_dict()
+    record_interaction(
+        user_id="user_1",
+        video_id=video_id,
+        event_type="like",
+    )
 
-    return render_template(
-        "video.html",
-        video=selected_video,
+    return jsonify(
+        {
+            "message": "Video liked"
+        }
     )
 
 
 if __name__ == "__main__":
-    app.run(
-        port=5001,
-        debug=True,
-    )
 
+    app.run(
+        debug=True,
+        port=5001,
+    )

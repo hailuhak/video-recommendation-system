@@ -1,10 +1,7 @@
-
 <!DOCTYPE html>
-
 <html lang="en">
 
 <head>
-
     <meta charset="UTF-8">
 
     <meta
@@ -14,7 +11,6 @@
 
     <title>{{ video.title }} | VideoRec</title>
 
-
     <style>
 
         * {
@@ -22,7 +18,6 @@
             margin: 0;
             padding: 0;
         }
-
 
         body {
             font-family: Arial, sans-serif;
@@ -191,7 +186,7 @@
         .video-details {
             margin-top: 24px;
 
-            margin-bottom: 45px;
+            margin-bottom: 20px;
         }
 
 
@@ -243,6 +238,86 @@
             color: #94a3b8;
 
             font-size: 14px;
+        }
+
+
+        /* =========================
+           Like button
+        ========================= */
+
+        .like-container {
+            display: flex;
+
+            align-items: center;
+
+            margin-bottom: 45px;
+        }
+
+
+        .like-button {
+            border: none;
+
+            padding: 11px 20px;
+
+            border-radius: 10px;
+
+            background: #ffffff;
+
+            color: #475569;
+
+            font-size: 14px;
+
+            font-weight: 600;
+
+            cursor: pointer;
+
+            box-shadow:
+                0 5px 18px rgba(79, 70, 229, 0.10);
+
+            border:
+                1px solid rgba(99, 102, 241, 0.12);
+
+            transition:
+                background 0.2s ease,
+                color 0.2s ease,
+                transform 0.2s ease,
+                box-shadow 0.2s ease;
+        }
+
+
+        .like-button:hover {
+            background: #eef2ff;
+
+            color: #4f46e5;
+
+            transform: translateY(-2px);
+
+            box-shadow:
+                0 8px 22px rgba(79, 70, 229, 0.15);
+        }
+
+
+        .like-button:active {
+            transform: translateY(0);
+        }
+
+
+        .like-button.liked {
+            background: #6366f1;
+
+            color: white;
+
+            border-color: #6366f1;
+
+            cursor: default;
+
+            box-shadow:
+                0 6px 18px rgba(99, 102, 241, 0.25);
+        }
+
+
+        .like-button:disabled {
+            cursor: default;
         }
 
 
@@ -378,7 +453,6 @@
             .video-details h1 {
                 font-size: 24px;
             }
-
         }
 
 
@@ -413,7 +487,7 @@
 
 
             .video-details {
-                margin-bottom: 35px;
+                margin-bottom: 15px;
             }
 
 
@@ -422,12 +496,16 @@
             }
 
 
+            .like-container {
+                margin-bottom: 35px;
+            }
+
+
             .recommendation-grid {
                 grid-template-columns: 1fr;
 
                 gap: 18px;
             }
-
         }
 
     </style>
@@ -438,7 +516,9 @@
 <body>
 
 
-    <!-- Navigation -->
+    <!-- =========================
+         Navigation
+    ========================= -->
 
     <nav class="navbar">
 
@@ -460,7 +540,9 @@
     </nav>
 
 
-    <!-- Main content -->
+    <!-- =========================
+         Main content
+    ========================= -->
 
     <main class="container">
 
@@ -475,7 +557,9 @@
         </a>
 
 
-        <!-- YouTube player -->
+        <!-- =========================
+             YouTube player
+        ========================= -->
 
         <div class="video-player">
 
@@ -488,7 +572,9 @@
         </div>
 
 
-        <!-- Video information -->
+        <!-- =========================
+             Video information
+        ========================= -->
 
         <div class="video-details">
 
@@ -518,7 +604,26 @@
         </div>
 
 
-        <!-- Recommendations -->
+        <!-- =========================
+             Like button
+        ========================= -->
+
+        <div class="like-container">
+
+            <button
+                id="like-button"
+                class="like-button"
+                type="button"
+            >
+                ❤️ Like
+            </button>
+
+        </div>
+
+
+        <!-- =========================
+             Recommendations
+        ========================= -->
 
         <section class="recommendations">
 
@@ -540,31 +645,31 @@
 
                 {% for recommendation in recommendations %}
 
-                <a
-                    href="/video/{{ recommendation.video_id }}"
-                    class="recommendation-card"
-                >
-
-                    <img
-                        src="{{ recommendation.thumbnail }}"
-                        alt="{{ recommendation.title }}"
+                    <a
+                        href="/video/{{ recommendation.video_id }}"
+                        class="recommendation-card"
                     >
 
-
-                    <div class="recommendation-info">
-
-                        <h3>
-                            {{ recommendation.title }}
-                        </h3>
+                        <img
+                            src="{{ recommendation.thumbnail }}"
+                            alt="{{ recommendation.title }}"
+                        >
 
 
-                        <p>
-                            {{ recommendation.channel }}
-                        </p>
+                        <div class="recommendation-info">
 
-                    </div>
+                            <h3>
+                                {{ recommendation.title }}
+                            </h3>
 
-                </a>
+
+                            <p>
+                                {{ recommendation.channel }}
+                            </p>
+
+                        </div>
+
+                    </a>
 
                 {% endfor %}
 
@@ -576,7 +681,72 @@
     </main>
 
 
+    <!-- =========================
+         Like button JavaScript
+    ========================= -->
+
+    <script>
+
+        const likeButton =
+            document.getElementById(
+                "like-button"
+            );
+
+
+        likeButton.addEventListener(
+            "click",
+            async () => {
+
+                try {
+
+                    likeButton.disabled = true;
+
+                    const response =
+                        await fetch(
+                            "/video/{{ video.video_id }}/like",
+                            {
+                                method: "POST",
+                            }
+                        );
+
+
+                    if (!response.ok) {
+
+                        throw new Error(
+                            "Failed to like video"
+                        );
+
+                    }
+
+
+                    likeButton.textContent =
+                        "❤️ Liked";
+
+                    likeButton.classList.add(
+                        "liked"
+                    );
+
+
+                } catch (error) {
+
+                    console.error(
+                        error
+                    );
+
+
+                    likeButton.disabled = false;
+
+                    likeButton.textContent =
+                        "❌ Try Again";
+
+                }
+
+            }
+        );
+
+    </script>
+
+
 </body>
 
 </html>
-
